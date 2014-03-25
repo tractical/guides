@@ -121,3 +121,48 @@ Delete your remote feature branch.
 ````
 git push origin :[branch]
 ````
+
+### Making a production-ready release
+
+Create the release branch out from develop.
+
+````
+# On branch develop
+git checkout -b release-[YYYMMDD]-[HHMM]
+````
+
+Branch name example: `release-20140325-1804`
+
+As git-flow dictates: this new branch may exist there for a while, until the
+release may be rolled out definitely. During that time, bug fixes may be applied
+in this branch (rather than on the `develop` branch). Adding large new features
+here is strictly prohibited. They must be merged into develop, and therefore,
+wait for the next big release.
+
+Once everything is ready, merge the release branch into master.
+
+````
+git checkout master
+git merge release-[YYYYMMDD]-[HHMM]
+````
+
+Tag the release version.
+
+````
+git tag -a [YYYYMMDD]-[HHMM]
+````
+
+Merge the release branch into develop.
+
+````
+git checkout develop
+git merge release-[YYYYMMDD]-[HHMM]
+````
+
+Finally, push the changes to the remote repository.
+
+````
+git push origin master
+git push origin develop
+git push origin --tags
+````
